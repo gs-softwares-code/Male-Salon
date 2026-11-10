@@ -17,3 +17,4 @@ if (fs.existsSync(dbPath)) {
 } else {
   console.log('database.json does not exist yet.');
 }
+

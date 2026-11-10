@@ -13,7 +13,7 @@ export const InstagramGrid: React.FC = () => {
       caption: 'Low taper fade & textured brush back by Master Vance.',
     },
     {
-      image: 'https://images.unsplash.com/photo-1517832606589-7929c392f566?auto=format&fit=crop&w=700&q=80',
+      image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=800&q=80',
       likes: '2,150',
       comments: '132',
       caption: 'Straight razor alignment. The cleanest edge in the city.',

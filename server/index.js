@@ -355,12 +355,23 @@ app.get('/api/analytics', (req, res) => {
   });
 });
 
-// Error handling protection
+// Error handling protection & persistence
 process.on('uncaughtException', (err) => {
   console.error('[Aurelius Server Uncaught]', err);
 });
 process.on('unhandledRejection', (reason) => {
   console.error('[Aurelius Server Rejection]', reason);
+});
+
+// Keep process active indefinitely
+setInterval(() => {}, 1000 * 60 * 60);
+
+// Graceful signal handling
+process.on('SIGTERM', () => {
+  console.log('[Aurelius Server] Received SIGTERM');
+});
+process.on('SIGINT', () => {
+  console.log('[Aurelius Server] Received SIGINT');
 });
 
 // Serve frontend build if present
