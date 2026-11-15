@@ -77,6 +77,35 @@ export interface Testimonial {
   date: string;
 }
 
+export interface HeroContent {
+  badge: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  description: string;
+  bgImage: string;
+  stat1Value: string;
+  stat1Label: string;
+  stat2Value: string;
+  stat2Label: string;
+  stat3Value: string;
+  stat3Label: string;
+  stat4Value: string;
+  stat4Label: string;
+}
+
+export interface WhyChooseUsContent {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+}
+
+export interface InstagramPost {
+  image: string;
+  likes: string;
+  comments: string;
+  caption: string;
+}
+
 export interface BusinessSettings {
   salonName: string;
   tagline: string;
@@ -99,4 +128,16 @@ export interface BusinessSettings {
   slotDurationMinutes: number;
   currencySymbol: string;
   taxRatePercent: number;
+}
+
+export interface WebsiteFullContent {
+  settings: BusinessSettings;
+  hero: HeroContent;
+  whyChooseUs: WhyChooseUsContent;
+  services: Service[];
+  barbers: Barber[];
+  packages: GroomingPackage[];
+  hairstyles: HairstyleItem[];
+  testimonials: Testimonial[];
+  instagramPosts: InstagramPost[];
 }

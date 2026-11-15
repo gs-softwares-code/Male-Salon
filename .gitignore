@@ -71,3 +71,10 @@ Thumbs.db
 .turbo/
 .temp/
 .temp*
+
+# Android build outputs & keystores
+android-admin/build/
+android-admin/.gradle/
+*.keystore
+*.jks
+

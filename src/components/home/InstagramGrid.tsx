@@ -3,9 +3,9 @@ import { Instagram, Heart, MessageCircle, ExternalLink } from 'lucide-react';
 import { useSalon } from '../../context/SalonContext';
 
 export const InstagramGrid: React.FC = () => {
-  const { settings } = useSalon();
+  const { settings, instagramPosts } = useSalon();
 
-  const posts = [
+  const posts = instagramPosts && instagramPosts.length > 0 ? instagramPosts : [
     {
       image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=700&q=80',
       likes: '1,420',

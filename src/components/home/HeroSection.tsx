@@ -3,14 +3,14 @@ import { Calendar, Award, Star, ArrowRight, Shield, Sparkles } from 'lucide-reac
 import { useSalon } from '../../context/SalonContext';
 
 export const HeroSection: React.FC = () => {
-  const { openBookingModal } = useSalon();
+  const { openBookingModal, hero } = useSalon();
 
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-salon-950">
       {/* Cinematic Background with Dark Luxury Overlay */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1920&q=85"
+          src={hero.bgImage}
           alt="Luxury Barber Studio Interior"
           className="w-full h-full object-cover object-center opacity-30 scale-105 transform animate-pulse duration-10000"
         />
@@ -23,19 +23,19 @@ export const HeroSection: React.FC = () => {
         <div className="inline-flex items-center space-x-2 bg-salon-900/90 border border-salon-gold/40 px-4 py-1.5 rounded-full mb-8 shadow-gold-glow backdrop-blur-md">
           <Award className="w-4 h-4 text-salon-gold" />
           <span className="text-xs uppercase tracking-[0.2em] font-semibold text-salon-beige">
-            Voted Best Men's Luxury Grooming Lounge • 2025 & 2026
+            {hero.badge}
           </span>
         </div>
 
         {/* Main Headline */}
         <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-extrabold tracking-tight text-salon-beigelight uppercase leading-none mb-6">
-          YOUR STYLE. <br />
-          <span className="gold-gradient-text drop-shadow-md">YOUR IDENTITY.</span>
+          {hero.headlineLine1} <br />
+          <span className="gold-gradient-text drop-shadow-md">{hero.headlineLine2}</span>
         </h1>
 
         {/* Narrative Description */}
         <p className="max-w-2xl mx-auto text-base sm:text-lg text-salon-beige/85 font-light leading-relaxed mb-10">
-          Step into an executive sanctuary where old-world European barber craftsmanship unites with bespoke modern styling. Precision fades, straight-razor hot towel rituals, and restorative scalp therapy.
+          {hero.description}
         </p>
 
         {/* CTA Button Group */}
@@ -65,26 +65,26 @@ export const HeroSection: React.FC = () => {
                 <Star key={i} className="w-3.5 h-3.5 fill-salon-gold text-salon-gold" />
               ))}
             </div>
-            <p className="text-xl font-heading font-bold text-salon-beigelight">4.98 / 5.0</p>
-            <p className="text-[11px] text-salon-muted uppercase tracking-wider">850+ Google Reviews</p>
+            <p className="text-xl font-heading font-bold text-salon-beigelight">{hero.stat1Value}</p>
+            <p className="text-[11px] text-salon-muted uppercase tracking-wider">{hero.stat1Label}</p>
           </div>
 
           <div className="bg-salon-900/60 p-4 rounded-xl border border-salon-800/60 backdrop-blur-sm">
             <Sparkles className="w-4 h-4 text-salon-gold mx-auto mb-1" />
-            <p className="text-xl font-heading font-bold text-salon-beigelight">14+ Yrs</p>
-            <p className="text-[11px] text-salon-muted uppercase tracking-wider">Master Craftsmanship</p>
+            <p className="text-xl font-heading font-bold text-salon-beigelight">{hero.stat2Value}</p>
+            <p className="text-[11px] text-salon-muted uppercase tracking-wider">{hero.stat2Label}</p>
           </div>
 
           <div className="bg-salon-900/60 p-4 rounded-xl border border-salon-800/60 backdrop-blur-sm">
             <Shield className="w-4 h-4 text-salon-gold mx-auto mb-1" />
-            <p className="text-xl font-heading font-bold text-salon-beigelight">100%</p>
-            <p className="text-[11px] text-salon-muted uppercase tracking-wider">Hospital UV Sanitized</p>
+            <p className="text-xl font-heading font-bold text-salon-beigelight">{hero.stat3Value}</p>
+            <p className="text-[11px] text-salon-muted uppercase tracking-wider">{hero.stat3Label}</p>
           </div>
 
           <div className="bg-salon-900/60 p-4 rounded-xl border border-salon-800/60 backdrop-blur-sm">
             <Award className="w-4 h-4 text-salon-gold mx-auto mb-1" />
-            <p className="text-xl font-heading font-bold text-salon-beigelight">VIP Bar</p>
-            <p className="text-[11px] text-salon-muted uppercase tracking-wider">Single Malt & Espresso</p>
+            <p className="text-xl font-heading font-bold text-salon-beigelight">{hero.stat4Value}</p>
+            <p className="text-[11px] text-salon-muted uppercase tracking-wider">{hero.stat4Label}</p>
           </div>
         </div>
       </div>

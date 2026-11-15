@@ -15,7 +15,7 @@ export const FloatingWhatsApp: React.FC = () => {
   ];
 
   const handleSend = (textToSend?: string) => {
-    const finalMsg = textToSend || message || 'Hello Aurelius Concierge, I would like to book a grooming service.';
+    const finalMsg = textToSend || message || `Hello ${settings.salonName} Concierge, I would like to book a grooming service.`;
     const cleanNum = settings.whatsappNumber.replace(/[^0-9]/g, '');
     const url = `https://wa.me/${cleanNum}?text=${encodeURIComponent(finalMsg)}`;
     window.open(url, '_blank');
@@ -39,7 +39,7 @@ export const FloatingWhatsApp: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-sm font-bold text-salon-beigelight font-heading tracking-wide">
-                  AURELIUS CONCIERGE
+                  {settings.salonName.toUpperCase()} CONCIERGE
                 </h4>
                 <p className="text-[11px] text-emerald-400 font-medium flex items-center space-x-1">
                   <span>● Online</span>
@@ -62,7 +62,7 @@ export const FloatingWhatsApp: React.FC = () => {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Private Styling Concierge</span>
               </div>
-              Welcome to Aurelius. How may we assist your styling ritual today? Choose a quick question below or type your request.
+              Welcome to {settings.salonName}. How may we assist your styling ritual today? Choose a quick question below or type your request.
             </div>
 
             <div className="space-y-1.5 pt-1">

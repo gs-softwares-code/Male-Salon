@@ -1,4 +1,65 @@
-import { Service, Barber, Appointment, GroomingPackage, HairstyleItem, Testimonial, BusinessSettings } from '../types';
+import { Service, Barber, Appointment, GroomingPackage, HairstyleItem, Testimonial, BusinessSettings, HeroContent, WhyChooseUsContent, InstagramPost } from '../types';
+
+export const initialHeroContent: HeroContent = {
+  badge: "Voted Best Men's Luxury Grooming Lounge • 2025 & 2026",
+  headlineLine1: "YOUR STYLE.",
+  headlineLine2: "YOUR IDENTITY.",
+  description: "Step into an executive sanctuary where old-world European barber craftsmanship unites with bespoke modern styling. Precision fades, straight-razor hot towel rituals, and restorative scalp therapy.",
+  bgImage: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1920&q=85",
+  stat1Value: "4.98 / 5.0",
+  stat1Label: "850+ Google Reviews",
+  stat2Value: "14+ Yrs",
+  stat2Label: "Master Craftsmanship",
+  stat3Value: "100%",
+  stat3Label: "Hospital UV Sanitized",
+  stat4Value: "VIP Bar",
+  stat4Label: "Single Malt & Espresso",
+};
+
+export const initialWhyChooseUsContent: WhyChooseUsContent = {
+  eyebrow: "The Hair Mission Standard",
+  title: "WHY DISCERNING GENTLEMEN CHOOSE US",
+  subtitle: "We operate as a private gentleman's retreat where craftsmanship, privacy, and impeccable grooming coalesce.",
+};
+
+export const initialInstagramPosts: InstagramPost[] = [
+  {
+    image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=700&q=80',
+    likes: '1,420',
+    comments: '84',
+    caption: 'Low taper fade & textured brush back by Master Vance.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=800&q=80',
+    likes: '2,150',
+    comments: '132',
+    caption: 'Straight razor alignment. The cleanest edge in the city.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=700&q=80',
+    likes: '980',
+    comments: '45',
+    caption: 'Precision debulking & matte sea salt spray finish.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=700&q=80',
+    likes: '3,210',
+    comments: '210',
+    caption: 'Our private lounge. Single malt scotch & custom leather seats.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=700&q=80',
+    likes: '1,890',
+    comments: '97',
+    caption: 'Skin fade transition. Note the zero-foil gradient blur.',
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=80',
+    likes: '1,640',
+    comments: '79',
+    caption: 'Natural beard growth sculpted with botanical sandalwood balm.',
+  },
+];
 
 export const initialServices: Service[] = [
   // Hair Services
@@ -452,9 +513,9 @@ export const initialTestimonials: Testimonial[] = [
 
 export const initialBusinessSettings: BusinessSettings = [
   {
-    salonName: 'AURELIUS',
+    salonName: 'The Hair Mission',
     tagline: 'Luxury Barber Lounge & Men’s Grooming Sanctuary',
-    phone: '+1 (555) 782-9012',
+    phone: '7696736030',
     email: 'concierge@aureliusbarbers.com',
     address: '448 Mayfair Avenue, Suite 100',
     city: 'Beverly Hills, CA',
@@ -463,7 +524,7 @@ export const initialBusinessSettings: BusinessSettings = [
       lat: 34.07362,
       lng: -118.400356,
     },
-    whatsappNumber: '15557829012',
+    whatsappNumber: '7696736030',
     instagramHandle: '@aurelius.barbers',
     openHours: {
       weekdays: '09:00 AM – 08:00 PM',

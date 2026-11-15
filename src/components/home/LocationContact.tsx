@@ -108,7 +108,7 @@ export const LocationContact: React.FC = () => {
           <div className="relative rounded-2xl overflow-hidden border border-salon-800 shadow-2xl bg-salon-950 h-[480px]">
             {/* Embedded Responsive Map */}
             <iframe
-              title="Aurelius Barber Lounge Location Map"
+              title={`${settings.salonName} Location Map`}
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13222.868770281692!2d-118.41162357777717!3d34.07362002340532!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bc04d6d147ab%3A0xd6c7c379fd381f1f!2sBeverly%20Hills%2C%20CA%2090210!5e0!3m2!1sen!2sus!4v1715000000000!5m2!1sen!2sus"
               className="w-full h-full border-0 filter invert contrast-125 hue-rotate-180 opacity-80 hover:opacity-100 transition duration-300"
               allowFullScreen={false}
@@ -120,7 +120,7 @@ export const LocationContact: React.FC = () => {
             <div className="absolute bottom-4 left-4 right-4 bg-salon-950/95 backdrop-blur-md p-4 rounded-xl border border-salon-gold/40 shadow-xl flex items-center justify-between">
               <div>
                 <h4 className="font-heading font-bold text-salon-beigelight text-sm tracking-wide">
-                  AURELIUS MEN'S LOUNGE
+                  {settings.salonName.toUpperCase()}
                 </h4>
                 <p className="text-[11px] text-salon-muted">
                   Beverly Hills Flagship • 448 Mayfair Ave

@@ -7,6 +7,9 @@ import {
   HairstyleItem,
   Testimonial,
   BusinessSettings,
+  HeroContent,
+  WhyChooseUsContent,
+  InstagramPost,
 } from '../types';
 import {
   initialServices,
@@ -16,7 +19,11 @@ import {
   initialTestimonials,
   initialBusinessSettings,
   initialAppointments,
+  initialHeroContent,
+  initialWhyChooseUsContent,
+  initialInstagramPosts,
 } from '../data/initialData';
+import { supabase } from '../services/supabase';
 
 interface AdminUser {
   id: string;
@@ -33,6 +40,9 @@ interface SalonContextType {
   hairstyles: HairstyleItem[];
   testimonials: Testimonial[];
   settings: BusinessSettings;
+  hero: HeroContent;
+  whyChooseUs: WhyChooseUsContent;
+  instagramPosts: InstagramPost[];
   isLoading: boolean;
   // Booking modal state
   isBookingOpen: boolean;
@@ -40,7 +50,7 @@ interface SalonContextType {
   closeBookingModal: () => void;
   selectedServiceForBooking: Service | null;
   selectedBarberForBooking: Barber | null;
-  // Admin modal / page state
+  // Admin modal / page state (kept for internal backward compatibility)
   isAdminOpen: boolean;
   setIsAdminOpen: (val: boolean) => void;
   adminUser: AdminUser | null;
@@ -55,6 +65,8 @@ interface SalonContextType {
   updateBarber: (id: string, updates: Partial<Barber>) => Promise<boolean>;
   addBarber: (barber: Partial<Barber>) => Promise<boolean>;
   updateSettings: (newSettings: Partial<BusinessSettings>) => Promise<boolean>;
+  updateHero: (newHero: Partial<HeroContent>) => Promise<boolean>;
+  updateWhyChooseUs: (newContent: Partial<WhyChooseUsContent>) => Promise<boolean>;
   addGalleryItem: (item: Partial<HairstyleItem>) => Promise<boolean>;
   deleteGalleryItem: (id: string) => Promise<boolean>;
   refreshData: () => Promise<void>;
@@ -87,7 +99,22 @@ export const SalonProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const saved = localStorage.getItem('aur_settings');
     return saved ? JSON.parse(saved) : initialBusinessSettings;
   });
-  const [testimonials] = useState<Testimonial[]>(initialTestimonials);
+  const [hero, setHero] = useState<HeroContent>(() => {
+    const saved = localStorage.getItem('aur_hero');
+    return saved ? JSON.parse(saved) : initialHeroContent;
+  });
+  const [whyChooseUs, setWhyChooseUs] = useState<WhyChooseUsContent>(() => {
+    const saved = localStorage.getItem('aur_why_us');
+    return saved ? JSON.parse(saved) : initialWhyChooseUsContent;
+  });
+  const [instagramPosts, setInstagramPosts] = useState<InstagramPost[]>(() => {
+    const saved = localStorage.getItem('aur_instagram');
+    return saved ? JSON.parse(saved) : initialInstagramPosts;
+  });
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() => {
+    const saved = localStorage.getItem('aur_testimonials');
+    return saved ? JSON.parse(saved) : initialTestimonials;
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   // Booking modal
@@ -102,8 +129,68 @@ export const SalonProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return saved ? JSON.parse(saved) : null;
   });
 
-  // Fetch initial from backend
+  // Fetch initial from backend & Supabase
   const refreshData = async () => {
+    // 1. Check Supabase site_content table
+    try {
+      const { data: supaData, error } = await supabase
+        .from('site_content')
+        .select('*')
+        .eq('id', 'current_content')
+        .maybeSingle();
+
+      if (!error && supaData && supaData.data) {
+        const d = supaData.data;
+        if (d.settings) {
+          setSettings((prev) => {
+            const updated = { ...prev, ...d.settings };
+            localStorage.setItem('aur_settings', JSON.stringify(updated));
+            return updated;
+          });
+        }
+        if (d.hero) {
+          setHero((prev) => {
+            const updated = { ...prev, ...d.hero };
+            localStorage.setItem('aur_hero', JSON.stringify(updated));
+            return updated;
+          });
+        }
+        if (d.whyChooseUs) {
+          setWhyChooseUs((prev) => {
+            const updated = { ...prev, ...d.whyChooseUs };
+            localStorage.setItem('aur_why_us', JSON.stringify(updated));
+            return updated;
+          });
+        }
+        if (Array.isArray(d.services) && d.services.length > 0) {
+          setServices(d.services);
+          localStorage.setItem('aur_services', JSON.stringify(d.services));
+        }
+        if (Array.isArray(d.barbers) && d.barbers.length > 0) {
+          setBarbers(d.barbers);
+          localStorage.setItem('aur_barbers', JSON.stringify(d.barbers));
+        }
+        if (Array.isArray(d.packages) && d.packages.length > 0) {
+          setPackages(d.packages);
+          localStorage.setItem('aur_packages', JSON.stringify(d.packages));
+        }
+        if (Array.isArray(d.hairstyles) && d.hairstyles.length > 0) {
+          setHairstyles(d.hairstyles);
+          localStorage.setItem('aur_hairstyles', JSON.stringify(d.hairstyles));
+        }
+        if (Array.isArray(d.testimonials) && d.testimonials.length > 0) {
+          setTestimonials(d.testimonials);
+          localStorage.setItem('aur_testimonials', JSON.stringify(d.testimonials));
+        }
+        if (Array.isArray(d.instagramPosts) && d.instagramPosts.length > 0) {
+          setInstagramPosts(d.instagramPosts);
+          localStorage.setItem('aur_instagram', JSON.stringify(d.instagramPosts));
+        }
+      }
+    } catch (e) {
+      console.log('Supabase table query fallback to broadcast / local', e);
+    }
+
     try {
       const [srvRes, brbRes, aptRes, pkgRes, galRes, setRes] = await Promise.allSettled([
         fetch('/api/services'),
@@ -163,6 +250,78 @@ export const SalonProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     refreshData();
+
+    // 2. Subscribe to Supabase Realtime live sync channel
+    const channel = supabase.channel('hair-mission-sync');
+    channel
+      .on('broadcast', { event: 'content-update' }, ({ payload }) => {
+        if (!payload) return;
+        setSettings((prev) => {
+          const updated = {
+            ...prev,
+            salonName: payload.salonName || prev.salonName,
+            phone: payload.phone || prev.phone,
+            whatsappNumber: payload.whatsappNumber || payload.phone || prev.whatsappNumber,
+            email: payload.email || prev.email,
+            tagline: payload.tagline || prev.tagline,
+          };
+          localStorage.setItem('aur_settings', JSON.stringify(updated));
+          return updated;
+        });
+      })
+      .on('broadcast', { event: 'full-content-update' }, ({ payload }) => {
+        if (!payload) return;
+        if (payload.settings) {
+          setSettings((prev) => {
+            const updated = { ...prev, ...payload.settings };
+            localStorage.setItem('aur_settings', JSON.stringify(updated));
+            return updated;
+          });
+        }
+        if (payload.hero) {
+          setHero((prev) => {
+            const updated = { ...prev, ...payload.hero };
+            localStorage.setItem('aur_hero', JSON.stringify(updated));
+            return updated;
+          });
+        }
+        if (payload.whyChooseUs) {
+          setWhyChooseUs((prev) => {
+            const updated = { ...prev, ...payload.whyChooseUs };
+            localStorage.setItem('aur_why_us', JSON.stringify(updated));
+            return updated;
+          });
+        }
+        if (Array.isArray(payload.services)) {
+          setServices(payload.services);
+          localStorage.setItem('aur_services', JSON.stringify(payload.services));
+        }
+        if (Array.isArray(payload.barbers)) {
+          setBarbers(payload.barbers);
+          localStorage.setItem('aur_barbers', JSON.stringify(payload.barbers));
+        }
+        if (Array.isArray(payload.packages)) {
+          setPackages(payload.packages);
+          localStorage.setItem('aur_packages', JSON.stringify(payload.packages));
+        }
+        if (Array.isArray(payload.hairstyles)) {
+          setHairstyles(payload.hairstyles);
+          localStorage.setItem('aur_hairstyles', JSON.stringify(payload.hairstyles));
+        }
+        if (Array.isArray(payload.testimonials)) {
+          setTestimonials(payload.testimonials);
+          localStorage.setItem('aur_testimonials', JSON.stringify(payload.testimonials));
+        }
+        if (Array.isArray(payload.instagramPosts)) {
+          setInstagramPosts(payload.instagramPosts);
+          localStorage.setItem('aur_instagram', JSON.stringify(payload.instagramPosts));
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const openBookingModal = (serviceId?: string, barberId?: string) => {
@@ -405,6 +564,27 @@ export const SalonProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const updateSettings = async (newSettings: Partial<BusinessSettings>): Promise<boolean> => {
+    // 1. Sync to Supabase Realtime broadcast & table
+    try {
+      const channel = supabase.channel('hair-mission-sync');
+      channel.subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          channel.send({
+            type: 'broadcast',
+            event: 'content-update',
+            payload: newSettings,
+          });
+        }
+      });
+
+      await supabase.from('site_content').upsert({
+        id: 'current_content',
+        data: newSettings,
+      });
+    } catch (e) {
+      console.log('Supabase sync error', e);
+    }
+
     try {
       await fetch('/api/settings', {
         method: 'PUT',
@@ -418,6 +598,24 @@ export const SalonProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSettings((prev) => {
       const updated = { ...prev, ...newSettings };
       localStorage.setItem('aur_settings', JSON.stringify(updated));
+      return updated;
+    });
+    return true;
+  };
+
+  const updateHero = async (newHero: Partial<HeroContent>): Promise<boolean> => {
+    setHero((prev) => {
+      const updated = { ...prev, ...newHero };
+      localStorage.setItem('aur_hero', JSON.stringify(updated));
+      return updated;
+    });
+    return true;
+  };
+
+  const updateWhyChooseUs = async (newContent: Partial<WhyChooseUsContent>): Promise<boolean> => {
+    setWhyChooseUs((prev) => {
+      const updated = { ...prev, ...newContent };
+      localStorage.setItem('aur_why_us', JSON.stringify(updated));
       return updated;
     });
     return true;
@@ -481,6 +679,9 @@ export const SalonProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         hairstyles,
         testimonials,
         settings,
+        hero,
+        whyChooseUs,
+        instagramPosts,
         isLoading,
         isBookingOpen,
         openBookingModal,
@@ -500,6 +701,8 @@ export const SalonProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         updateBarber,
         addBarber,
         updateSettings,
+        updateHero,
+        updateWhyChooseUs,
         addGalleryItem,
         deleteGalleryItem,
         refreshData,

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Award, ShieldCheck, Coffee, Sparkles, Scissors, Clock } from 'lucide-react';
+import { useSalon } from '../../context/SalonContext';
 
 export const WhyChooseUs: React.FC = () => {
+  const { whyChooseUs } = useSalon();
+
   const pillars = [
     {
       icon: Scissors,
@@ -47,13 +50,13 @@ export const WhyChooseUs: React.FC = () => {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center space-x-2 text-salon-gold text-xs font-semibold uppercase tracking-[0.25em] mb-3">
             <Sparkles className="w-4 h-4 text-salon-gold" />
-            <span>The Aurelius Standard</span>
+            <span>{whyChooseUs.eyebrow}</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-heading font-bold text-salon-beigelight tracking-wide mb-4">
-            WHY DISCERNING GENTLEMEN CHOOSE US
+            {whyChooseUs.title}
           </h2>
           <p className="text-salon-muted text-sm sm:text-base leading-relaxed">
-            We operate as a private gentleman's retreat where craftsmanship, privacy, and impeccable grooming coalesce.
+            {whyChooseUs.subtitle}
           </p>
         </div>
 

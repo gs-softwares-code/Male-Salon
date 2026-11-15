@@ -13,7 +13,6 @@ import { LocationContact } from './components/home/LocationContact';
 import { Footer } from './components/common/Footer';
 import { FloatingWhatsApp } from './components/common/FloatingWhatsApp';
 import { BookingWizardModal } from './components/booking/BookingWizardModal';
-import { AdminDashboard } from './components/Admin/AdminDashboard';
 
 export const App: React.FC = () => {
   return (
@@ -60,9 +59,6 @@ export const App: React.FC = () => {
 
         {/* Booking Wizard Modal */}
         <BookingWizardModal />
-
-        {/* Admin Dashboard Modal */}
-        <AdminDashboard />
       </div>
     </SalonProvider>
   );

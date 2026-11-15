@@ -49,15 +49,6 @@ export const Navbar: React.FC = () => {
               <Phone className="w-3.5 h-3.5" />
               <span>{settings.phone}</span>
             </a>
-            <span className="text-salon-700">|</span>
-            <button
-              onClick={() => setIsAdminOpen(true)}
-              className="flex items-center space-x-1 text-salon-muted hover:text-salon-gold transition text-xs"
-              title="Admin Portal"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-salon-gold/70" />
-              <span>{adminUser ? 'Staff Portal (Active)' : 'Staff Login'}</span>
-            </button>
           </div>
         </div>
       </div>
@@ -78,7 +69,7 @@ export const Navbar: React.FC = () => {
             </div>
             <div>
               <span className="text-2xl font-heading tracking-widest text-salon-beigelight font-bold block leading-none">
-                AURELIUS
+                {settings.salonName}
               </span>
               <span className="text-[10px] tracking-[0.25em] text-salon-gold uppercase block mt-1 font-semibold">
                 Barber Lounge & Spa
@@ -101,13 +92,6 @@ export const Navbar: React.FC = () => {
 
           {/* Right Action Buttons */}
           <div className="hidden sm:flex items-center space-x-4">
-            <button
-              onClick={() => setIsAdminOpen(true)}
-              className="px-3 py-2 rounded text-xs font-semibold uppercase tracking-wider text-salon-muted hover:text-salon-gold hover:bg-salon-900 border border-transparent hover:border-salon-800 transition lg:hidden"
-            >
-              Admin
-            </button>
-
             <button
               onClick={() => openBookingModal()}
               className="relative group overflow-hidden bg-gold-gradient text-salon-950 font-heading font-bold text-sm tracking-widest px-6 py-2.5 rounded shadow-gold-glow hover:shadow-gold-glow-lg transition duration-300 flex items-center space-x-2"
@@ -154,16 +138,6 @@ export const Navbar: React.FC = () => {
             </div>
 
             <div className="pt-4 border-t border-salon-800 flex flex-col space-y-3">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setIsAdminOpen(true);
-                }}
-                className="w-full text-left text-sm text-salon-gold flex items-center space-x-2 py-2"
-              >
-                <ShieldCheck className="w-4 h-4" />
-                <span>Staff & Admin Portal</span>
-              </button>
               <a
                 href={`tel:${settings.phone}`}
                 className="text-sm text-salon-beige/80 flex items-center space-x-2 py-1"

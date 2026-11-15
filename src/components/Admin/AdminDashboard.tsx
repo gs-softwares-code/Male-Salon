@@ -252,7 +252,7 @@ export const AdminDashboard: React.FC = () => {
             </div>
             <div>
               <h3 className="font-heading font-bold text-salon-beigelight text-lg tracking-wide uppercase">
-                Aurelius Management Console
+                {settings.salonName} Management Console
               </h3>
               <p className="text-[11px] text-salon-gold font-medium">
                 {adminUser ? `Signed in as ${adminUser.name} (${adminUser.role})` : 'Executive Staff Authentication'}

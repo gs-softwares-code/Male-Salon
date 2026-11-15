@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
                 <Scissors className="w-4 h-4 text-salon-gold rotate-45" />
               </div>
               <span className="text-2xl font-heading tracking-widest text-salon-beigelight font-bold">
-                AURELIUS
+                {settings.salonName}
               </span>
             </div>
             <p className="text-sm text-salon-muted leading-relaxed">
@@ -77,15 +77,6 @@ export const Footer: React.FC = () => {
               <li>
                 <a href="#reviews" className="hover:text-salon-gold transition">Client Endorsements</a>
               </li>
-              <li>
-                <button
-                  onClick={() => setIsAdminOpen(true)}
-                  className="hover:text-salon-gold transition flex items-center space-x-1.5 text-salon-gold/80"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Admin Management Console</span>
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -124,7 +115,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-salon-800/80 flex flex-col md:flex-row justify-between items-center text-xs text-salon-muted space-y-4 md:space-y-0">
-          <p>© {new Date().getFullYear()} AURELIUS Men's Grooming Lounge. All Rights Reserved.</p>
+          <p>© {new Date().getFullYear()} {settings.salonName}. All Rights Reserved.</p>
           <div className="flex items-center space-x-6">
             <span className="hover:text-salon-beige cursor-pointer">Privacy Policy</span>
             <span>•</span>

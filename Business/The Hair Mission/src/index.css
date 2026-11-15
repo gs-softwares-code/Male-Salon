@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme {
+  --color-salon-darkest: #08080a;
+  --color-salon-dark: #0e0e12;
+  --color-salon-card: #141419;
+  --color-salon-cardHover: #1c1c24;
+  --color-salon-border: #262633;
+  --color-salon-borderLight: #38384a;
+  --color-salon-muted: #8b8b9e;
+  --color-salon-light: #f5f4f0;
+  --color-salon-sand: #e2ded5;
+  --color-salon-gold: #cda851;
+  --color-salon-goldLight: #e4c478;
+  --color-salon-goldDark: #a38234;
+  --color-salon-bronze: #ba803f;
+
+  --color-salon-950: #08080a;
+  --color-salon-900: #0e0e12;
+  --color-salon-850: #141419;
+  --color-salon-800: #1c1c24;
+  --color-salon-700: #262633;
+
+  --font-heading: 'Bebas Neue', 'Oswald', sans-serif;
+  --font-subheading: 'Oswald', sans-serif;
+  --font-body: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+  --font-serif: 'Cinzel', serif;
+
+  --shadow-gold-glow: 0 0 25px -5px rgba(205, 168, 81, 0.25);
+  --shadow-gold-glow-lg: 0 0 45px -8px rgba(205, 168, 81, 0.35);
+  --shadow-card-dark: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+}
+
+html {
+  color-scheme: dark;
+  background-color: #08080a;
+  color: #f5f4f0;
+  font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+}
+
+body {
+  background-color: #08080a;
+  color: #f5f4f0;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.font-subheading {
+  font-family: 'Oswald', sans-serif;
+}
+
+.font-serif {
+  font-family: 'Cinzel', serif;
+}
+
+/* Custom luxury scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #08080a;
+}
+::-webkit-scrollbar-thumb {
+  background: #262633;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cda851;
+}
+
+/* Gold Gradient Shimmer */
+.gold-text-gradient {
+  background: linear-gradient(135deg, #f3de9e 0%, #cda851 50%, #a38234 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #f3de9e 0%, #cda851 50%, #a38234 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bronze-gradient-text {
+  background: linear-gradient(135deg, #f3d2ba 0%, #d49b6a 50%, #8c4e1a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #e4c478 0%, #cda851 50%, #ba803f 100%);
+}
+
+/* Glassmorphism Luxury Overlay */
+.glass-panel {
+  background: rgba(20, 20, 25, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(205, 168, 81, 0.18);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(205, 168, 81, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(205, 168, 81, 0.2);
+}
+
+/* Shimmer Button */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-btn {
+  background: linear-gradient(90deg, #cda851 0%, #f3de9e 50%, #cda851 100%);
+  background-size: 200% 100%;
+  animation: shimmer 4s infinite linear;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

@@ -459,9 +459,9 @@
     }
   ],
   "settings": {
-    "salonName": "AURELIUS",
+    "salonName": "The Hair Mission",
     "tagline": "Luxury Barber Lounge & Men’s Grooming Sanctuary",
-    "phone": "+1 (555) 782-9012",
+    "phone": "7696736030",
     "email": "concierge@aureliusbarbers.com",
     "address": "448 Mayfair Avenue, Suite 100",
     "city": "Beverly Hills, CA",
@@ -470,7 +470,7 @@
       "lat": 34.07362,
       "lng": -118.400356
     },
-    "whatsappNumber": "15557829012",
+    "whatsappNumber": "7696736030",
     "instagramHandle": "@aurelius.barbers",
     "openHours": {
       "weekdays": "09:00 AM – 08:00 PM",

@@ -194,7 +194,7 @@ export const BookingWizardModal: React.FC = () => {
   // Direct WhatsApp Confirmation Trigger
   const handleSendWhatsAppConfirmation = () => {
     if (!confirmedAppointment) return;
-    const text = `Hello Aurelius Barbers, I have confirmed my booking:
+    const text = `Hello ${settings.salonName}, I have confirmed my booking:
 Code: ${confirmedAppointment.bookingCode}
 Client: ${confirmedAppointment.customerName}
 Service: ${confirmedAppointment.serviceName}
@@ -208,7 +208,7 @@ Thank you!`;
   // Google Calendar Add Link
   const handleAddToCalendar = () => {
     if (!confirmedAppointment) return;
-    const title = encodeURIComponent(`Aurelius Barber: ${confirmedAppointment.serviceName}`);
+    const title = encodeURIComponent(`${settings.salonName}: ${confirmedAppointment.serviceName}`);
     const details = encodeURIComponent(
       `Appointment Code: ${confirmedAppointment.bookingCode}\nArtisan: ${confirmedAppointment.barberName}\nService: ${confirmedAppointment.serviceName} ($${confirmedAppointment.servicePrice})\nLocation: ${settings.address}, ${settings.city}`
     );
@@ -229,7 +229,7 @@ Thank you!`;
             </div>
             <div>
               <h3 className="font-heading font-bold text-salon-beigelight text-lg tracking-wide uppercase">
-                Aurelius Private Reservation
+                {settings.salonName} Private Reservation
               </h3>
               <p className="text-[11px] text-salon-gold font-medium">
                 Step {step} of {step === 5 ? '5 - Confirmed' : '4'}
