@@ -668,7 +668,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] text-[#A09E9B] mb-1">Price ($)</label>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Price (₹)</label>
                     <input
                       type="number"
                       value={srv.price}
@@ -903,7 +903,7 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] text-[#A09E9B] mb-1">Price ($)</label>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Price (₹)</label>
                     <input
                       type="number"
                       value={pkgItem.price}

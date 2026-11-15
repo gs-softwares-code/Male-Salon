@@ -757,7 +757,7 @@ export const AdminDashboard: React.FC = () => {
                           <div className="grid grid-cols-2 gap-2 mb-3 bg-salon-950 p-2.5 rounded-lg border border-salon-800">
                             <div>
                               <label className="text-[10px] text-salon-muted uppercase block">
-                                Price ($)
+                                Price (₹)
                               </label>
                               <input
                                 type="number"
@@ -848,7 +848,7 @@ export const AdminDashboard: React.FC = () => {
                           <div className="grid grid-cols-2 gap-2">
                             <div>
                               <label className="block text-[11px] uppercase text-salon-muted font-semibold mb-1">
-                                Price ($)
+                                Price (₹)
                               </label>
                               <input
                                 type="number"

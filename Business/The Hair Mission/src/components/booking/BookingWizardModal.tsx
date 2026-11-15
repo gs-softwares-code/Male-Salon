@@ -210,7 +210,7 @@ Thank you!`;
     if (!confirmedAppointment) return;
     const title = encodeURIComponent(`${settings.salonName}: ${confirmedAppointment.serviceName}`);
     const details = encodeURIComponent(
-      `Appointment Code: ${confirmedAppointment.bookingCode}\nArtisan: ${confirmedAppointment.barberName}\nService: ${confirmedAppointment.serviceName} ($${confirmedAppointment.servicePrice})\nLocation: ${settings.address}, ${settings.city}`
+      `Appointment Code: ${confirmedAppointment.bookingCode}\nArtisan: ${confirmedAppointment.barberName}\nService: ${confirmedAppointment.serviceName} (${settings.currencySymbol}${confirmedAppointment.servicePrice})\nLocation: ${settings.address}, ${settings.city}`
     );
     const location = encodeURIComponent(`${settings.address}, ${settings.city}`);
     const dStr = confirmedAppointment.appointmentDate.replace(/-/g, '');

@@ -532,7 +532,7 @@ export const initialBusinessSettings: BusinessSettings = [
       sunday: '10:00 AM – 05:00 PM',
     },
     slotDurationMinutes: 45,
-    currencySymbol: '$',
+    currencySymbol: '₹',
     taxRatePercent: 8.5,
   }
 ][0];
