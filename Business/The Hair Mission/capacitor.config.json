@@ -1,0 +1,9 @@
+{
+  "appId": "com.thehairmission.adminpwa",
+  "appName": "The Hair Mission Admin",
+  "webDir": "admin-pwa/dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  }
+}
