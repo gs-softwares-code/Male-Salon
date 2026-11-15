@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, SUPABASE_URL } from './supabase';
 import { 
-  ShieldCheck, 
   Send, 
   RefreshCw, 
   Phone, 
@@ -9,22 +8,54 @@ import {
   Scissors, 
   UserCheck, 
   Layers, 
-  LogOut, 
+  Plus, 
+  Trash2, 
+  Edit3,
+  Image as ImageIcon,
   CheckCircle2, 
-  AlertCircle,
-  Smartphone,
-  Eye
+  ExternalLink
 } from 'lucide-react';
 
-export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [email, setEmail] = useState('admin@thehairmission.com');
-  const [password, setPassword] = useState('admin123');
-  const [authError, setAuthError] = useState('');
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
+export interface ServiceItem {
+  id: string;
+  name: string;
+  category: 'hair' | 'beard' | 'treatment';
+  price: number;
+  durationMinutes: number;
+  description: string;
+  image: string;
+  popular?: boolean;
+  isActive: boolean;
+}
 
+export interface BarberItem {
+  id: string;
+  name: string;
+  role: string;
+  experienceYears: number;
+  specialization: string[];
+  rating: number;
+  reviewCount: number;
+  workingHours: string;
+  image: string;
+  bio: string;
+  isAvailable: boolean;
+}
+
+export interface PackageItem {
+  id: string;
+  name: string;
+  tagline: string;
+  price: number;
+  billingPeriod?: string;
+  features: string[];
+  recommended?: boolean;
+  badge?: string;
+}
+
+export default function App() {
   const [activeTab, setActiveTab] = useState<'general' | 'hero' | 'services' | 'barbers' | 'packages' | 'whyUs'>('general');
-  const [statusMessage, setStatusMessage] = useState('● Ready to sync with Supabase');
+  const [statusMessage, setStatusMessage] = useState('● Supabase Live Channel Ready');
   const [isPublishing, setIsPublishing] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
@@ -57,50 +88,105 @@ export default function App() {
     stat4Label: 'Single Malt & Espresso'
   });
 
-  // Services State
-  const [services, setServices] = useState([
+  // Services State (Dynamic Add/Edit/Delete)
+  const [services, setServices] = useState<ServiceItem[]>([
     {
       id: 'hair-1',
       name: 'Classic Haircut',
+      category: 'hair',
       price: 35,
-      description: 'Precision scissor and clipper cut tailored to your head shape, finished with neck shave.'
+      durationMinutes: 30,
+      description: 'Precision scissor and clipper cut tailored to your head shape, finished with neck shave, tonic, and natural matte clay styling.',
+      image: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80',
+      popular: true,
+      isActive: true
     },
     {
       id: 'hair-2',
       name: 'Fade Haircut',
+      category: 'hair',
       price: 45,
-      description: 'Seamless low, mid, or high skin fade with foil shaver detailing and razor line-up.'
+      durationMinutes: 40,
+      description: 'Seamless low, mid, or high skin fade with foil shaver detailing, razor edge line-up, and hot mist finish.',
+      image: 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=800&q=80',
+      popular: true,
+      isActive: true
     },
     {
       id: 'beard-4',
-      name: 'Hot Towel Shave',
+      name: 'Hot Towel Shave (Royal Ritual)',
+      category: 'beard',
       price: 45,
-      description: 'Royal straight razor ritual with botanical pre-shave oils and cold towel astringent.'
+      durationMinutes: 45,
+      description: 'Triple eucalyptus hot towel compress, sandalwood shave lather, cut-throat razor precision, and post-shave alum block balm.',
+      image: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=800&q=80',
+      popular: true,
+      isActive: true
     }
   ]);
 
-  // Barbers State
-  const [barbers, setBarbers] = useState([
+  // Barbers State (Dynamic Add/Edit/Delete + Internet Image URL integration)
+  const [barbers, setBarbers] = useState<BarberItem[]>([
     {
       id: 'barber-1',
       name: 'Marcus Vance',
       role: 'Master Craftsman & Creative Director',
-      experienceYears: 14
+      experienceYears: 14,
+      specialization: ['Precision Scissor Craft', 'Beard Morphology', 'Signature Fades'],
+      rating: 4.98,
+      reviewCount: 384,
+      workingHours: '10:00 AM - 7:00 PM (Tue - Sat)',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80',
+      bio: 'Trained in Mayfair, London and Milan. Marcus combines old-world barbering traditions with razor-sharp modern silhouettes for bespoke gentleman profiles.',
+      isAvailable: true
     },
     {
       id: 'barber-2',
       name: 'Julian Reyes',
       role: 'Master Barber & Fade Architect',
-      experienceYears: 9
+      experienceYears: 9,
+      specialization: ['Skin Fades', 'Razor Line Art', 'Hot Towel Rituals'],
+      rating: 4.97,
+      reviewCount: 290,
+      workingHours: '09:00 AM - 6:00 PM (Wed - Sun)',
+      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80',
+      bio: 'Former senior stylist at Manhattan elite grooming salons. Master of textural volume and low-to-high skin fade transitions.',
+      isAvailable: true
     }
   ]);
 
-  // Packages State
-  const [pkg, setPkg] = useState({
-    name: 'The Executive Monthly Club',
-    price: 110,
-    tagline: 'Unlimited grooming maintenance for busy directors'
-  });
+  // Packages State (Dynamic Add/Edit/Delete)
+  const [packages, setPackages] = useState<PackageItem[]>([
+    {
+      id: 'pkg-1',
+      name: 'The Executive Monthly Club',
+      tagline: 'Unlimited grooming maintenance for busy directors',
+      price: 110,
+      billingPeriod: 'Monthly',
+      features: [
+        'Bi-weekly Haircut & Beard Shaping',
+        'Complimentary Scalp Clarifying Ritual',
+        'Priority Weekend Booking Access',
+        'Exclusive Bar Lounge Access'
+      ],
+      recommended: true,
+      badge: 'Most Popular'
+    },
+    {
+      id: 'pkg-2',
+      name: 'The Royal Wedding Protocol',
+      tagline: 'Comprehensive party styling for Groom & 3 Groomsmen',
+      price: 340,
+      billingPeriod: 'One-Time Event',
+      features: [
+        'Full Hair, Beard & Royal Straight Razor Shaves',
+        'Charcoal Face Purify & Hydro-Eye Masks',
+        'Private Studio Reservation with Scotch Service'
+      ],
+      recommended: false,
+      badge: 'Bespoke Experience'
+    }
+  ]);
 
   // Why Us State
   const [whyUs, setWhyUs] = useState({
@@ -109,50 +195,10 @@ export default function App() {
     subtitle: "We operate as a private gentleman's retreat where craftsmanship, privacy, and impeccable grooming coalesce."
   });
 
-  // Check saved session
+  // Load content directly from Supabase upon mount (NO LOGIN REQUIRED)
   useEffect(() => {
-    const saved = localStorage.getItem('thm_pwa_auth');
-    if (saved === 'true') {
-      setIsAuthenticated(true);
-      fetchLiveContent();
-    }
+    fetchLiveContent();
   }, []);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsAuthenticating(true);
-    setAuthError('');
-
-    try {
-      // 1. Supabase Auth attempt
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (!error && data.session) {
-        setIsAuthenticated(true);
-        localStorage.setItem('thm_pwa_auth', 'true');
-        fetchLiveContent();
-        setIsAuthenticating(false);
-        return;
-      }
-    } catch (err) {}
-
-    // 2. Staff credentials check
-    if (
-      (email === 'admin@thehairmission.com' || email === 'admin@aurelius.com') &&
-      password === 'admin123'
-    ) {
-      setIsAuthenticated(true);
-      localStorage.setItem('thm_pwa_auth', 'true');
-      fetchLiveContent();
-    } else {
-      setAuthError('Invalid credentials. Use admin@thehairmission.com / admin123');
-    }
-    setIsAuthenticating(false);
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('thm_pwa_auth');
-  };
 
   const fetchLiveContent = async () => {
     setIsFetching(true);
@@ -177,7 +223,7 @@ export default function App() {
           setBarbers(d.barbers);
         }
         if (Array.isArray(d.packages) && d.packages.length > 0) {
-          setPkg(d.packages[0]);
+          setPackages(d.packages);
         }
         setStatusMessage('✔ Live content synced successfully from database');
       } else {
@@ -200,7 +246,7 @@ export default function App() {
       whyChooseUs: whyUs,
       services,
       barbers,
-      packages: [pkg]
+      packages
     };
 
     try {
@@ -236,86 +282,78 @@ export default function App() {
     }
   };
 
-  // LOGIN SCREEN
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-[#0A0A0C] flex flex-col justify-center items-center px-4">
-        <div className="max-w-md w-full bg-[#141418] border border-[#D4AF37]/40 rounded-2xl p-8 shadow-2xl">
-          <div className="text-center mb-6">
-            <div className="w-14 h-14 mx-auto rounded-full bg-[#1C1C24] border border-[#D4AF37]/60 flex items-center justify-center text-[#D4AF37] mb-3">
-              <ShieldCheck className="w-8 h-8" />
-            </div>
-            <h1 className="text-2xl font-bold tracking-wider text-[#F5EBE6]">THE HAIR MISSION</h1>
-            <p className="text-xs uppercase tracking-widest text-[#D4AF37] mt-1 font-semibold">Staff & Admin PWA Portal</p>
-          </div>
+  // SERVICES CRUD
+  const handleAddService = () => {
+    const newSrv: ServiceItem = {
+      id: 'srv-' + Date.now(),
+      name: 'New Custom Service',
+      category: 'hair',
+      price: 40,
+      durationMinutes: 30,
+      description: 'Precision styling tailored to your preferences.',
+      image: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80',
+      popular: false,
+      isActive: true
+    };
+    setServices([...services, newSrv]);
+  };
 
-          {authError && (
-            <div className="mb-4 bg-red-950/60 border border-red-500/50 rounded-lg p-3 flex items-center space-x-2 text-red-300 text-xs">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{authError}</span>
-            </div>
-          )}
+  const handleDeleteService = (id: string) => {
+    setServices(services.filter(s => s.id !== id));
+  };
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-[#A09E9B] mb-1">Staff Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-11 bg-[#1C1C24] border border-[#2B2B36] focus:border-[#D4AF37] rounded-lg px-3.5 text-sm text-white outline-none"
-                required
-              />
-            </div>
+  // BARBERS CRUD + URL INTEGRATION
+  const handleAddBarber = () => {
+    const newBarber: BarberItem = {
+      id: 'barber-' + Date.now(),
+      name: 'Master Barber',
+      role: 'Master Craftsman & Stylist',
+      experienceYears: 8,
+      specialization: ['Custom Cuts', 'Beard Detailing'],
+      rating: 5.0,
+      reviewCount: 150,
+      workingHours: '10:00 AM - 7:00 PM',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80',
+      bio: 'Expert stylist dedicated to uncompromising precision grooming.',
+      isAvailable: true
+    };
+    setBarbers([...barbers, newBarber]);
+  };
 
-            <div>
-              <label className="block text-xs font-semibold text-[#A09E9B] mb-1">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-11 bg-[#1C1C24] border border-[#2B2B36] focus:border-[#D4AF37] rounded-lg px-3.5 text-sm text-white outline-none"
-                required
-              />
-            </div>
+  const handleDeleteBarber = (id: string) => {
+    setBarbers(barbers.filter(b => b.id !== id));
+  };
 
-            <button
-              type="submit"
-              disabled={isAuthenticating}
-              className="w-full h-12 bg-gradient-to-r from-[#D4AF37] to-[#E5C158] hover:brightness-110 text-black font-bold text-sm tracking-wider uppercase rounded-lg transition"
-            >
-              {isAuthenticating ? 'Authenticating...' : 'Sign In as Staff'}
-            </button>
-          </form>
+  // PACKAGES CRUD
+  const handleAddPackage = () => {
+    const newPkg: PackageItem = {
+      id: 'pkg-' + Date.now(),
+      name: 'VIP Package',
+      tagline: 'Exclusive grooming tier',
+      price: 85,
+      billingPeriod: 'Monthly',
+      features: ['Signature Haircut', 'Beard Sculpting', 'Hot Towel Finish'],
+      recommended: false
+    };
+    setPackages([...packages, newPkg]);
+  };
 
-          <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={() => {
-                setEmail('admin@thehairmission.com');
-                setPassword('admin123');
-              }}
-              className="text-xs text-[#D4AF37] hover:underline"
-            >
-              Fill Staff Credentials: admin@thehairmission.com / admin123
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleDeletePackage = (id: string) => {
+    setPackages(packages.filter(p => p.id !== id));
+  };
 
-  // DASHBOARD SCREEN
   return (
-    <div className="min-h-screen bg-[#0A0A0C] flex flex-col">
+    <div className="min-h-screen bg-[#0A0A0C] flex flex-col font-sans">
       {/* Header Bar */}
       <header className="bg-[#141418] border-b border-[#24242B] px-4 py-3.5 sticky top-0 z-30 flex items-center justify-between">
         <div>
           <div className="flex items-center space-x-2">
             <span className="text-lg font-bold tracking-wider text-[#D4AF37]">THE HAIR MISSION</span>
-            <span className="bg-[#D4AF37]/20 text-[#D4AF37] text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#D4AF37]/30">PWA</span>
+            <span className="bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded-full">
+              DIRECT SUPABASE ACCESS
+            </span>
           </div>
-          <p className="text-[11px] text-[#A09E9B]">Live Content Controller • Signed in as {email}</p>
+          <p className="text-[11px] text-[#A09E9B]">Live Content Controller • Add, Edit & Delete Cards Instantly</p>
         </div>
 
         <div className="flex items-center space-x-2">
@@ -326,13 +364,6 @@ export default function App() {
             title="Refresh database state"
           >
             <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#D4AF37]' : ''}`} />
-          </button>
-          <button
-            onClick={handleLogout}
-            className="p-2 text-red-400 hover:text-red-300 hover:bg-red-950/40 rounded-lg transition"
-            title="Log Out"
-          >
-            <LogOut className="w-4 h-4" />
           </button>
         </div>
       </header>
@@ -351,15 +382,15 @@ export default function App() {
         <button
           onClick={() => setActiveTab('general')}
           className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition ${
-            activeTab === 'general' ? 'bg-[#D4AF37] text-black' : 'text-[#A09E9B] hover:text-[#D4AF37]'
+            activeTab === 'general' ? 'bg-[#D4AF37] text-black font-bold' : 'text-[#A09E9B] hover:text-[#D4AF37]'
           }`}
         >
-          General & Phone
+          General & Contact
         </button>
         <button
           onClick={() => setActiveTab('hero')}
           className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition ${
-            activeTab === 'hero' ? 'bg-[#D4AF37] text-black' : 'text-[#A09E9B] hover:text-[#D4AF37]'
+            activeTab === 'hero' ? 'bg-[#D4AF37] text-black font-bold' : 'text-[#A09E9B] hover:text-[#D4AF37]'
           }`}
         >
           Hero & Metrics
@@ -367,31 +398,31 @@ export default function App() {
         <button
           onClick={() => setActiveTab('services')}
           className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition ${
-            activeTab === 'services' ? 'bg-[#D4AF37] text-black' : 'text-[#A09E9B] hover:text-[#D4AF37]'
+            activeTab === 'services' ? 'bg-[#D4AF37] text-black font-bold' : 'text-[#A09E9B] hover:text-[#D4AF37]'
           }`}
         >
-          Services & Prices
+          Services ({services.length})
         </button>
         <button
           onClick={() => setActiveTab('barbers')}
           className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition ${
-            activeTab === 'barbers' ? 'bg-[#D4AF37] text-black' : 'text-[#A09E9B] hover:text-[#D4AF37]'
+            activeTab === 'barbers' ? 'bg-[#D4AF37] text-black font-bold' : 'text-[#A09E9B] hover:text-[#D4AF37]'
           }`}
         >
-          Artisans & Barbers
+          Artisans & Barbers ({barbers.length})
         </button>
         <button
           onClick={() => setActiveTab('packages')}
           className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition ${
-            activeTab === 'packages' ? 'bg-[#D4AF37] text-black' : 'text-[#A09E9B] hover:text-[#D4AF37]'
+            activeTab === 'packages' ? 'bg-[#D4AF37] text-black font-bold' : 'text-[#A09E9B] hover:text-[#D4AF37]'
           }`}
         >
-          VIP Packages
+          VIP Packages ({packages.length})
         </button>
         <button
           onClick={() => setActiveTab('whyUs')}
           className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition ${
-            activeTab === 'whyUs' ? 'bg-[#D4AF37] text-black' : 'text-[#A09E9B] hover:text-[#D4AF37]'
+            activeTab === 'whyUs' ? 'bg-[#D4AF37] text-black font-bold' : 'text-[#A09E9B] hover:text-[#D4AF37]'
           }`}
         >
           Why Choose Us
@@ -591,145 +622,316 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 3: SERVICES */}
+        {/* TAB 3: SERVICES (DYNAMIC ADD / EDIT / DELETE) */}
         {activeTab === 'services' && (
           <div className="bg-[#141418] border border-[#24242B] rounded-xl p-5 space-y-5">
-            <div className="flex items-center space-x-2 text-[#D4AF37] border-b border-[#24242B] pb-3">
-              <Scissors className="w-4 h-4" />
-              <h2 className="text-sm font-bold uppercase tracking-wider">Services &amp; Pricing Menu</h2>
+            <div className="flex items-center justify-between border-b border-[#24242B] pb-3">
+              <div className="flex items-center space-x-2 text-[#D4AF37]">
+                <Scissors className="w-4 h-4" />
+                <h2 className="text-sm font-bold uppercase tracking-wider">Services ({services.length} Cards)</h2>
+              </div>
+              <button
+                onClick={handleAddService}
+                className="bg-[#D4AF37] hover:brightness-110 text-black text-xs font-bold px-3 py-1.5 rounded-md flex items-center space-x-1 transition"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add Service Card</span>
+              </button>
             </div>
 
             {services.map((srv, idx) => (
-              <div key={srv.id || idx} className="bg-[#181820] border border-[#2B2B36] rounded-lg p-4 space-y-3">
+              <div key={srv.id || idx} className="bg-[#181820] border border-[#2B2B36] rounded-lg p-4 space-y-3 relative group">
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-bold text-[#D4AF37] uppercase">Service #{idx + 1}</span>
+                  <span className="text-xs font-bold text-[#D4AF37] uppercase">Card #{idx + 1}</span>
+                  <button
+                    onClick={() => handleDeleteService(srv.id)}
+                    className="text-red-400 hover:text-red-300 p-1 rounded hover:bg-red-950/40 transition"
+                    title="Delete Card"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <div className="flex space-x-3">
-                  <input
-                    type="text"
-                    value={srv.name}
-                    placeholder="Service Name"
-                    onChange={(e) => {
-                      const updated = [...services];
-                      updated[idx].name = e.target.value;
-                      setServices(updated);
-                    }}
-                    className="flex-1 h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
-                  />
-                  <div className="relative w-28">
-                    <span className="absolute left-3 top-2.5 text-xs text-[#A09E9B]">$</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Service Title</label>
+                    <input
+                      type="text"
+                      value={srv.name}
+                      onChange={(e) => {
+                        const updated = [...services];
+                        updated[idx].name = e.target.value;
+                        setServices(updated);
+                      }}
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Price ($)</label>
                     <input
                       type="number"
                       value={srv.price}
-                      placeholder="Price"
                       onChange={(e) => {
                         const updated = [...services];
                         updated[idx].price = Number(e.target.value);
                         setServices(updated);
                       }}
-                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg pl-7 pr-3 text-sm text-white outline-none"
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
                     />
                   </div>
                 </div>
 
-                <input
-                  type="text"
-                  value={srv.description}
-                  placeholder="Service description"
-                  onChange={(e) => {
-                    const updated = [...services];
-                    updated[idx].description = e.target.value;
-                    setServices(updated);
-                  }}
-                  className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-xs text-white/80 outline-none"
-                />
+                <div>
+                  <label className="block text-[10px] text-[#A09E9B] mb-1">Description</label>
+                  <input
+                    type="text"
+                    value={srv.description}
+                    onChange={(e) => {
+                      const updated = [...services];
+                      updated[idx].description = e.target.value;
+                      setServices(updated);
+                    }}
+                    className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-xs text-white/90 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] text-[#A09E9B] mb-1">Card Image URL</label>
+                  <input
+                    type="text"
+                    value={srv.image}
+                    onChange={(e) => {
+                      const updated = [...services];
+                      updated[idx].image = e.target.value;
+                      setServices(updated);
+                    }}
+                    className="w-full h-9 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-xs text-white/70 font-mono outline-none"
+                  />
+                </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* TAB 4: BARBERS */}
+        {/* TAB 4: BARBERS & ARTISANS (DYNAMIC ADD / EDIT / DELETE + INTERNET URL INTEGRATION) */}
         {activeTab === 'barbers' && (
           <div className="bg-[#141418] border border-[#24242B] rounded-xl p-5 space-y-5">
-            <div className="flex items-center space-x-2 text-[#D4AF37] border-b border-[#24242B] pb-3">
-              <UserCheck className="w-4 h-4" />
-              <h2 className="text-sm font-bold uppercase tracking-wider">Master Artisans &amp; Barbers</h2>
+            <div className="flex items-center justify-between border-b border-[#24242B] pb-3">
+              <div className="flex items-center space-x-2 text-[#D4AF37]">
+                <UserCheck className="w-4 h-4" />
+                <h2 className="text-sm font-bold uppercase tracking-wider">Master Artisans ({barbers.length} Cards)</h2>
+              </div>
+              <button
+                onClick={handleAddBarber}
+                className="bg-[#D4AF37] hover:brightness-110 text-black text-xs font-bold px-3 py-1.5 rounded-md flex items-center space-x-1 transition"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add Artisan Card</span>
+              </button>
             </div>
 
             {barbers.map((barber, idx) => (
-              <div key={barber.id || idx} className="bg-[#181820] border border-[#2B2B36] rounded-lg p-4 space-y-3">
-                <span className="text-xs font-bold text-[#D4AF37] uppercase">Artisan #{idx + 1}</span>
-
-                <div>
-                  <label className="block text-[11px] text-[#A09E9B] mb-1">Barber Name</label>
-                  <input
-                    type="text"
-                    value={barber.name}
-                    onChange={(e) => {
-                      const updated = [...barbers];
-                      updated[idx].name = e.target.value;
-                      setBarbers(updated);
-                    }}
-                    className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
-                  />
+              <div key={barber.id || idx} className="bg-[#181820] border border-[#2B2B36] rounded-lg p-4 space-y-3 relative group">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold text-[#D4AF37] uppercase">Artisan Card #{idx + 1}</span>
+                  <button
+                    onClick={() => handleDeleteBarber(barber.id)}
+                    className="text-red-400 hover:text-red-300 p-1 rounded hover:bg-red-950/40 transition"
+                    title="Delete Card"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <div>
-                  <label className="block text-[11px] text-[#A09E9B] mb-1">Role &amp; Credentials</label>
-                  <input
-                    type="text"
-                    value={barber.role}
-                    onChange={(e) => {
-                      const updated = [...barbers];
-                      updated[idx].role = e.target.value;
-                      setBarbers(updated);
-                    }}
-                    className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Artisan Name</label>
+                    <input
+                      type="text"
+                      value={barber.name}
+                      onChange={(e) => {
+                        const updated = [...barbers];
+                        updated[idx].name = e.target.value;
+                        setBarbers(updated);
+                      }}
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Title & Role</label>
+                    <input
+                      type="text"
+                      value={barber.role}
+                      onChange={(e) => {
+                        const updated = [...barbers];
+                        updated[idx].role = e.target.value;
+                        setBarbers(updated);
+                      }}
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Years Experience</label>
+                    <input
+                      type="number"
+                      value={barber.experienceYears}
+                      onChange={(e) => {
+                        const updated = [...barbers];
+                        updated[idx].experienceYears = Number(e.target.value);
+                        setBarbers(updated);
+                      }}
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Working Schedule</label>
+                    <input
+                      type="text"
+                      value={barber.workingHours}
+                      onChange={(e) => {
+                        const updated = [...barbers];
+                        updated[idx].workingHours = e.target.value;
+                        setBarbers(updated);
+                      }}
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                    />
+                  </div>
+                </div>
+
+                {/* INTERNET IMAGE URL INTEGRATION */}
+                <div className="pt-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] text-[#D4AF37] font-semibold flex items-center space-x-1">
+                      <ImageIcon className="w-3 h-3" />
+                      <span>Artisan Photo (Internet Image URL Integration)</span>
+                    </label>
+                    {barber.image && (
+                      <a 
+                        href={barber.image} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="text-[10px] text-[#A09E9B] hover:text-[#D4AF37] flex items-center space-x-0.5"
+                      >
+                        <span>Preview URL</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    )}
+                  </div>
+                  <div className="flex space-x-3 items-center">
+                    <input
+                      type="text"
+                      placeholder="Paste any photo URL from the internet (e.g. https://...)"
+                      value={barber.image}
+                      onChange={(e) => {
+                        const updated = [...barbers];
+                        updated[idx].image = e.target.value;
+                        setBarbers(updated);
+                      }}
+                      className="flex-1 h-10 bg-[#1C1C24] border border-[#2B2B36] focus:border-[#D4AF37] rounded-lg px-3 text-xs text-white font-mono outline-none"
+                    />
+                    {barber.image && (
+                      <div className="w-10 h-10 rounded-lg overflow-hidden border border-[#D4AF37]/50 bg-[#1C1C24] flex-shrink-0">
+                        <img 
+                          src={barber.image} 
+                          alt={barber.name} 
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80';
+                          }}
+                          className="w-full h-full object-cover" 
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-[#888899] mt-1">
+                    Paste any direct image link from Pinterest, Unsplash, Instagram CDN, Google Drive, or any image host.
+                  </p>
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* TAB 5: PACKAGES */}
+        {/* TAB 5: PACKAGES (DYNAMIC ADD / EDIT / DELETE) */}
         {activeTab === 'packages' && (
           <div className="bg-[#141418] border border-[#24242B] rounded-xl p-5 space-y-4">
-            <div className="flex items-center space-x-2 text-[#D4AF37] border-b border-[#24242B] pb-3">
-              <Layers className="w-4 h-4" />
-              <h2 className="text-sm font-bold uppercase tracking-wider">VIP Memberships &amp; Packages</h2>
+            <div className="flex items-center justify-between border-b border-[#24242B] pb-3">
+              <div className="flex items-center space-x-2 text-[#D4AF37]">
+                <Layers className="w-4 h-4" />
+                <h2 className="text-sm font-bold uppercase tracking-wider">VIP Packages ({packages.length} Cards)</h2>
+              </div>
+              <button
+                onClick={handleAddPackage}
+                className="bg-[#D4AF37] hover:brightness-110 text-black text-xs font-bold px-3 py-1.5 rounded-md flex items-center space-x-1 transition"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Add Package Card</span>
+              </button>
             </div>
 
-            <div>
-              <label className="block text-[11px] font-bold text-[#A09E9B] uppercase mb-1">Package Name</label>
-              <input
-                type="text"
-                value={pkg.name}
-                onChange={(e) => setPkg({ ...pkg, name: e.target.value })}
-                className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
-              />
-            </div>
+            {packages.map((pkgItem, idx) => (
+              <div key={pkgItem.id || idx} className="bg-[#181820] border border-[#2B2B36] rounded-lg p-4 space-y-3 relative group">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold text-[#D4AF37] uppercase">Package #{idx + 1}</span>
+                  <button
+                    onClick={() => handleDeletePackage(pkgItem.id)}
+                    className="text-red-400 hover:text-red-300 p-1 rounded hover:bg-red-950/40 transition"
+                    title="Delete Package"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
 
-            <div>
-              <label className="block text-[11px] font-bold text-[#A09E9B] uppercase mb-1">Price ($)</label>
-              <input
-                type="number"
-                value={pkg.price}
-                onChange={(e) => setPkg({ ...pkg, price: Number(e.target.value) })}
-                className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
-              />
-            </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="sm:col-span-2">
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Package Title</label>
+                    <input
+                      type="text"
+                      value={pkgItem.name}
+                      onChange={(e) => {
+                        const updated = [...packages];
+                        updated[idx].name = e.target.value;
+                        setPackages(updated);
+                      }}
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                    />
+                  </div>
 
-            <div>
-              <label className="block text-[11px] font-bold text-[#A09E9B] uppercase mb-1">Tagline</label>
-              <input
-                type="text"
-                value={pkg.tagline}
-                onChange={(e) => setPkg({ ...pkg, tagline: e.target.value })}
-                className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
-              />
-            </div>
+                  <div>
+                    <label className="block text-[10px] text-[#A09E9B] mb-1">Price ($)</label>
+                    <input
+                      type="number"
+                      value={pkgItem.price}
+                      onChange={(e) => {
+                        const updated = [...packages];
+                        updated[idx].price = Number(e.target.value);
+                        setPackages(updated);
+                      }}
+                      className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] text-[#A09E9B] mb-1">Tagline</label>
+                  <input
+                    type="text"
+                    value={pkgItem.tagline}
+                    onChange={(e) => {
+                      const updated = [...packages];
+                      updated[idx].tagline = e.target.value;
+                      setPackages(updated);
+                    }}
+                    className="w-full h-10 bg-[#1C1C24] border border-[#2B2B36] rounded-lg px-3 text-sm text-white outline-none"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         )}
 

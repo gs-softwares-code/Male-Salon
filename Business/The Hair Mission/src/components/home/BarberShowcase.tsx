@@ -30,8 +30,12 @@ export const BarberShowcase: React.FC = () => {
               {/* Image & Experience Badge */}
               <div className="relative h-80 overflow-hidden bg-salon-950">
                 <img
-                  src={barber.image}
+                  src={barber.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80'}
                   alt={barber.name}
+                  onError={(e) => {
+                    // Fallback if user enters broken external internet URL
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80';
+                  }}
                   className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-salon-950 via-salon-950/20 to-transparent opacity-80" />

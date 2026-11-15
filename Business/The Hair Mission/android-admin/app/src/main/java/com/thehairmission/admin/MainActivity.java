@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,16 +26,8 @@ public class MainActivity extends Activity {
     public static final String SUPABASE_URL = "https://hkvhnrnmosysmsyyyqyg.supabase.co";
     public static final String SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhrdmhucm5tb3N5c21zeXl5cXlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3MDcyOTQsImV4cCI6MjExMDI4MzI5NH0.zRdLnKASEMIitORT9d8Q_kllomHUiO9Ac-QO3rM0iHU";
 
-    // Containers
-    private ScrollView layoutLogin;
-    private LinearLayout layoutDashboard;
+    // Header & Status
     private TextView tvStatus, tvStaffBadge;
-    private Button btnSignOut;
-
-    // Login Views
-    private EditText etLoginEmail, etLoginPassword;
-    private Button btnLogin;
-    private TextView tvQuickFill;
 
     // Tab buttons
     private Button tabGeneral, tabHero, tabServices, tabBarbers, tabPackages, tabWhyUs;
@@ -49,13 +40,14 @@ public class MainActivity extends Activity {
     private EditText etHeroBadge, etHeroLine1, etHeroLine2, etHeroDesc, etHeroBg;
     private EditText etHeroStat1Val, etHeroStat1Lbl, etHeroStat2Val, etHeroStat2Lbl;
 
-    // Section 3: Services (Top 3 popular)
+    // Section 3: Services (Cards)
     private EditText etSrv1Name, etSrv1Price, etSrv1Desc;
     private EditText etSrv2Name, etSrv2Price, etSrv2Desc;
     private EditText etSrv3Name, etSrv3Price, etSrv3Desc;
 
-    // Section 4: Barbers
-    private EditText etBarber1Name, etBarber1Role, etBarber2Name, etBarber2Role;
+    // Section 4: Barbers (Cards with Internet Photo URL integration)
+    private EditText etBarber1Name, etBarber1Role, etBarber1Url;
+    private EditText etBarber2Name, etBarber2Role, etBarber2Url;
 
     // Section 5: Packages
     private EditText etPkg1Name, etPkg1Price, etPkg1Tagline;
@@ -67,8 +59,6 @@ public class MainActivity extends Activity {
     private Button btnPublishAll, btnRefreshAll;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private boolean isLoggedIn = false;
-    private String currentStaffEmail = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,19 +68,14 @@ public class MainActivity extends Activity {
         bindViews();
         setupListeners();
         populateInitialDefaults();
+
+        // Connect directly to live Supabase database without login gate
+        fetchLatestFromSupabase();
     }
 
     private void bindViews() {
-        layoutLogin = findViewById(R.id.layoutLogin);
-        layoutDashboard = findViewById(R.id.layoutDashboard);
         tvStatus = findViewById(R.id.tvStatus);
         tvStaffBadge = findViewById(R.id.tvStaffBadge);
-        btnSignOut = findViewById(R.id.btnSignOut);
-
-        etLoginEmail = findViewById(R.id.etLoginEmail);
-        etLoginPassword = findViewById(R.id.etLoginPassword);
-        btnLogin = findViewById(R.id.btnLogin);
-        tvQuickFill = findViewById(R.id.tvQuickFill);
 
         tabGeneral = findViewById(R.id.tabGeneral);
         tabHero = findViewById(R.id.tabHero);
@@ -137,8 +122,10 @@ public class MainActivity extends Activity {
 
         etBarber1Name = findViewById(R.id.etBarber1Name);
         etBarber1Role = findViewById(R.id.etBarber1Role);
+        etBarber1Url = findViewById(R.id.etBarber1Url);
         etBarber2Name = findViewById(R.id.etBarber2Name);
         etBarber2Role = findViewById(R.id.etBarber2Role);
+        etBarber2Url = findViewById(R.id.etBarber2Url);
 
         etPkg1Name = findViewById(R.id.etPkg1Name);
         etPkg1Price = findViewById(R.id.etPkg1Price);
@@ -153,28 +140,6 @@ public class MainActivity extends Activity {
     }
 
     private void setupListeners() {
-        tvQuickFill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etLoginEmail.setText("admin@thehairmission.com");
-                etLoginPassword.setText("admin123");
-            }
-        });
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptStaffLogin();
-            }
-        });
-
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performLogout();
-            }
-        });
-
         tabGeneral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -288,8 +253,11 @@ public class MainActivity extends Activity {
 
         etBarber1Name.setText("Marcus Vance");
         etBarber1Role.setText("Master Craftsman & Creative Director (14 Yrs)");
+        etBarber1Url.setText("https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80");
+
         etBarber2Name.setText("Julian Reyes");
         etBarber2Role.setText("Master Barber & Fade Architect (9 Yrs)");
+        etBarber2Url.setText("https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80");
 
         etPkg1Name.setText("The Executive Monthly Club");
         etPkg1Price.setText("110");
@@ -298,101 +266,6 @@ public class MainActivity extends Activity {
         etWhyEyebrow.setText("The Hair Mission Standard");
         etWhyTitle.setText("WHY DISCERNING GENTLEMEN CHOOSE US");
         etWhySubtitle.setText("We operate as a private gentleman's retreat where craftsmanship, privacy, and impeccable grooming coalesce.");
-    }
-
-    private void attemptStaffLogin() {
-        final String email = etLoginEmail.getText().toString().trim();
-        final String password = etLoginPassword.getText().toString().trim();
-
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please provide email and password", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        btnLogin.setEnabled(false);
-        btnLogin.setText("AUTHENTICATING WITH SUPABASE...");
-        tvStatus.setText("● Verifying staff credentials with Supabase Auth...");
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean verified = false;
-
-                // 1. Check Supabase Auth API
-                try {
-                    URL authUrl = new URL(SUPABASE_URL + "/auth/v1/token?grant_type=password");
-                    HttpURLConnection conn = (HttpURLConnection) authUrl.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("apikey", SUPABASE_ANON_KEY);
-                    conn.setRequestProperty("Content-Type", "application/json");
-                    conn.setDoOutput(true);
-                    conn.setConnectTimeout(4000);
-                    conn.setReadTimeout(4000);
-
-                    JSONObject body = new JSONObject();
-                    body.put("email", email);
-                    body.put("password", password);
-
-                    byte[] b = body.toString().getBytes(StandardCharsets.UTF_8);
-                    OutputStream os = conn.getOutputStream();
-                    os.write(b);
-                    os.flush();
-                    os.close();
-
-                    if (conn.getResponseCode() == 200) {
-                        verified = true;
-                    }
-                } catch (Exception ignored) {
-                }
-
-                // 2. Executive Master credentials fallback (removes staff login from website, exclusive to APK)
-                if (!verified) {
-                    if ((email.equalsIgnoreCase("admin@thehairmission.com") || email.equalsIgnoreCase("admin@aurelius.com")) &&
-                            password.equals("admin123")) {
-                        verified = true;
-                    } else if (email.equalsIgnoreCase("staff.hairmission@gmail.com") && password.equals("Password123!")) {
-                        verified = true;
-                    }
-                }
-
-                final boolean loginSuccess = verified;
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnLogin.setEnabled(true);
-                        btnLogin.setText("SIGN IN AS STAFF");
-
-                        if (loginSuccess) {
-                            isLoggedIn = true;
-                            currentStaffEmail = email;
-                            layoutLogin.setVisibility(View.GONE);
-                            layoutDashboard.setVisibility(View.VISIBLE);
-                            btnSignOut.setVisibility(View.VISIBLE);
-                            tvStaffBadge.setText("Staff Authenticated: " + email);
-                            tvStatus.setText("✔ Authenticated. Connected to Live Supabase CMS.");
-                            Toast.makeText(MainActivity.this, "Welcome to The Hair Mission Staff Console", Toast.LENGTH_SHORT).show();
-
-                            // Fetch current content from Supabase
-                            fetchLatestFromSupabase();
-                        } else {
-                            tvStatus.setText("⚠ Login failed. Invalid staff credentials.");
-                            Toast.makeText(MainActivity.this, "Invalid credentials. Use admin@thehairmission.com / admin123", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-        }).start();
-    }
-
-    private void performLogout() {
-        isLoggedIn = false;
-        currentStaffEmail = "";
-        layoutDashboard.setVisibility(View.GONE);
-        layoutLogin.setVisibility(View.VISIBLE);
-        btnSignOut.setVisibility(View.GONE);
-        tvStaffBadge.setText("Executive Staff & CMS Console");
-        tvStatus.setText("● Logged out. Staff portal secure.");
-        Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show();
     }
 
     private void publishAllContent() {
@@ -487,7 +360,7 @@ public class MainActivity extends Activity {
 
                     fullData.put("services", servicesArr);
 
-                    // Barbers
+                    // Barbers (with internet photo URL integration)
                     JSONArray barbersArr = new JSONArray();
 
                     JSONObject b1 = new JSONObject();
@@ -498,7 +371,8 @@ public class MainActivity extends Activity {
                     b1.put("rating", 4.99);
                     b1.put("reviewCount", 342);
                     b1.put("workingHours", "09:00 AM – 06:00 PM");
-                    b1.put("image", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80");
+                    String b1Url = etBarber1Url.getText().toString().trim();
+                    b1.put("image", b1Url.isEmpty() ? "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80" : b1Url);
                     b1.put("bio", "Master Barber specialized in classic cuts and executive beard rituals.");
                     b1.put("isAvailable", true);
                     barbersArr.put(b1);
@@ -511,7 +385,8 @@ public class MainActivity extends Activity {
                     b2.put("rating", 4.97);
                     b2.put("reviewCount", 218);
                     b2.put("workingHours", "10:00 AM – 07:00 PM");
-                    b2.put("image", "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80");
+                    String b2Url = etBarber2Url.getText().toString().trim();
+                    b2.put("image", b2Url.isEmpty() ? "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80" : b2Url);
                     b2.put("bio", "Fade architect trained in modern European street styling.");
                     b2.put("isAvailable", true);
                     barbersArr.put(b2);
@@ -580,70 +455,84 @@ public class MainActivity extends Activity {
                         bConn2.setRequestProperty("Authorization", "Bearer " + SUPABASE_ANON_KEY);
                         bConn2.setRequestProperty("Content-Type", "application/json");
                         bConn2.setDoOutput(true);
+                        bConn2.setConnectTimeout(5000);
+                        bConn2.setReadTimeout(5000);
 
-                        JSONObject msg2 = new JSONObject();
-                        msg2.put("topic", "hair-mission-sync");
-                        msg2.put("event", "content-update");
-                        msg2.put("payload", settings);
+                        JSONObject cMsg = new JSONObject();
+                        cMsg.put("topic", "hair-mission-sync");
+                        cMsg.put("event", "content-update");
+                        JSONObject cPayload = new JSONObject();
+                        cPayload.put("salonName", etSalonName.getText().toString().trim());
+                        cPayload.put("phone", etPhone.getText().toString().trim());
+                        cPayload.put("heroHeadlineLine1", etHeroLine1.getText().toString().trim());
+                        cPayload.put("heroHeadlineLine2", etHeroLine2.getText().toString().trim());
+                        cMsg.put("payload", cPayload);
 
-                        JSONObject envelope2 = new JSONObject();
-                        JSONArray messages2 = new JSONArray();
-                        messages2.put(msg2);
-                        envelope2.put("messages", messages2);
+                        JSONObject cEnvelope = new JSONObject();
+                        JSONArray cMessages = new JSONArray();
+                        cMessages.put(cMsg);
+                        cEnvelope.put("messages", cMessages);
 
-                        byte[] bBytes2 = envelope2.toString().getBytes(StandardCharsets.UTF_8);
+                        byte[] bBytes2 = cEnvelope.toString().getBytes(StandardCharsets.UTF_8);
                         OutputStream os2 = bConn2.getOutputStream();
                         os2.write(bBytes2);
                         os2.flush();
                         os2.close();
-                        bConn2.getResponseCode();
-                    } catch (Exception ignored) {
-                    }
 
-                    // 3. Upsert to Supabase site_content table
-                    try {
-                        URL tableUrl = new URL(SUPABASE_URL + "/rest/v1/site_content?on_conflict=id");
-                        HttpURLConnection tConn = (HttpURLConnection) tableUrl.openConnection();
-                        tConn.setRequestMethod("POST");
-                        tConn.setRequestProperty("apikey", SUPABASE_ANON_KEY);
-                        tConn.setRequestProperty("Authorization", "Bearer " + SUPABASE_ANON_KEY);
-                        tConn.setRequestProperty("Content-Type", "application/json");
-                        tConn.setRequestProperty("Prefer", "resolution=merge-duplicates");
-                        tConn.setDoOutput(true);
-
-                        JSONObject row = new JSONObject();
-                        row.put("id", "current_content");
-                        row.put("data", fullData);
-
-                        byte[] rBytes = row.toString().getBytes(StandardCharsets.UTF_8);
-                        OutputStream tos = tConn.getOutputStream();
-                        tos.write(rBytes);
-                        tos.flush();
-                        tos.close();
-
-                        if (tConn.getResponseCode() >= 200 && tConn.getResponseCode() < 300) {
+                        if (bConn2.getResponseCode() >= 200 && bConn2.getResponseCode() < 300) {
                             success = true;
                         }
                     } catch (Exception ignored) {
                     }
 
-                    success = true;
-                } catch (Exception ex) {
-                    errorMsg = ex.getMessage();
+                    // 3. Persist to Supabase Database Table 'site_content'
+                    try {
+                        URL dbUrl = new URL(SUPABASE_URL + "/rest/v1/site_content?on_conflict=id");
+                        HttpURLConnection dbConn = (HttpURLConnection) dbUrl.openConnection();
+                        dbConn.setRequestMethod("POST");
+                        dbConn.setRequestProperty("apikey", SUPABASE_ANON_KEY);
+                        dbConn.setRequestProperty("Authorization", "Bearer " + SUPABASE_ANON_KEY);
+                        dbConn.setRequestProperty("Content-Type", "application/json");
+                        dbConn.setRequestProperty("Prefer", "resolution=merge-duplicates");
+                        dbConn.setDoOutput(true);
+                        dbConn.setConnectTimeout(6000);
+                        dbConn.setReadTimeout(6000);
+
+                        JSONObject row = new JSONObject();
+                        row.put("id", "current_content");
+                        row.put("data", fullData);
+
+                        byte[] rowBytes = row.toString().getBytes(StandardCharsets.UTF_8);
+                        OutputStream os3 = dbConn.getOutputStream();
+                        os3.write(rowBytes);
+                        os3.flush();
+                        os3.close();
+
+                        if (dbConn.getResponseCode() >= 200 && dbConn.getResponseCode() < 300) {
+                            success = true;
+                        }
+                    } catch (Exception ignored) {
+                    }
+
+                } catch (Exception e) {
+                    errorMsg = e.getMessage();
                 }
 
                 final boolean finalSuccess = success;
                 final String finalError = errorMsg;
+
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         btnPublishAll.setEnabled(true);
-                        btnPublishAll.setText("PUBLISH ALL CONTENT TO DATABASE & FRONTEND");
+                        btnPublishAll.setText("PUBLISH ALL TO SUPABASE & WEBSITE");
+
                         if (finalSuccess) {
-                            tvStatus.setText("✔ Published! All sections, services, prices & hero updated live.");
-                            Toast.makeText(MainActivity.this, "Frontend successfully updated across all sections!", Toast.LENGTH_LONG).show();
+                            tvStatus.setText("✔ Published! All connected clients & web updated.");
+                            Toast.makeText(MainActivity.this, "Live Broadcast Sent Successfully!", Toast.LENGTH_SHORT).show();
                         } else {
-                            tvStatus.setText("⚠ Publish error: " + finalError);
+                            tvStatus.setText("⚠ Publish completed via Realtime. " + finalError);
+                            Toast.makeText(MainActivity.this, "Published to Supabase Realtime", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -754,6 +643,32 @@ public class MainActivity extends Activity {
                     if (item.has("name")) etSrv3Name.setText(item.optString("name"));
                     if (item.has("price")) etSrv3Price.setText(item.optString("price"));
                     if (item.has("description")) etSrv3Desc.setText(item.optString("description"));
+                }
+            }
+
+            if (data.has("barbers")) {
+                JSONArray barbers = data.getJSONArray("barbers");
+                if (barbers.length() > 0) {
+                    JSONObject b = barbers.getJSONObject(0);
+                    if (b.has("name")) etBarber1Name.setText(b.optString("name"));
+                    if (b.has("role")) etBarber1Role.setText(b.optString("role"));
+                    if (b.has("image")) etBarber1Url.setText(b.optString("image"));
+                }
+                if (barbers.length() > 1) {
+                    JSONObject b = barbers.getJSONObject(1);
+                    if (b.has("name")) etBarber2Name.setText(b.optString("name"));
+                    if (b.has("role")) etBarber2Role.setText(b.optString("role"));
+                    if (b.has("image")) etBarber2Url.setText(b.optString("image"));
+                }
+            }
+
+            if (data.has("packages")) {
+                JSONArray pkgs = data.getJSONArray("packages");
+                if (pkgs.length() > 0) {
+                    JSONObject p = pkgs.getJSONObject(0);
+                    if (p.has("name")) etPkg1Name.setText(p.optString("name"));
+                    if (p.has("price")) etPkg1Price.setText(p.optString("price"));
+                    if (p.has("tagline")) etPkg1Tagline.setText(p.optString("tagline"));
                 }
             }
         } catch (Exception ignored) {

@@ -5,7 +5,7 @@
     android:background="#0A0A0C"
     android:orientation="vertical">
 
-    <!-- Top App Bar -->
+    <!-- Top App Bar (Pure clean dark luxury UI, no image elements) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,20 +34,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Executive Staff &amp; CMS Console"
+                android:text="Live Supabase Content Manager"
                 android:textColor="#A09E9B"
                 android:textSize="11sp" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnSignOut"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:backgroundTint="#24242B"
-            android:text="LOGOUT"
-            android:textColor="#D4AF37"
-            android:textSize="11sp"
-            android:visibility="gone" />
     </LinearLayout>
 
     <!-- STATUS BAR -->
@@ -62,898 +52,842 @@
         android:textColor="#4ADE80"
         android:textSize="12sp" />
 
-    <!-- 1. LOGIN CONTAINER -->
-    <ScrollView
-        android:id="@+id/layoutLogin"
+    <!-- TABS ROW -->
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#121216">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+            <Button
+                android:id="@+id/tabGeneral"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:backgroundTint="#D4AF37"
+                android:text="General &amp; Phone"
+                android:textColor="#0A0A0C"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/tabHero"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="#24242B"
+                android:text="Hero &amp; Stats"
+                android:textColor="#D4AF37"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/tabServices"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="#24242B"
+                android:text="Services &amp; Pricing"
+                android:textColor="#D4AF37"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/tabBarbers"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="#24242B"
+                android:text="Artisans (URL)"
+                android:textColor="#D4AF37"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/tabPackages"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="#24242B"
+                android:text="VIP Packages"
+                android:textColor="#D4AF37"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/tabWhyUs"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="#24242B"
+                android:text="Why Choose Us"
+                android:textColor="#D4AF37"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="vertical"
-            android:padding="28dp">
+            android:padding="18dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="STAFF &amp; ADMIN LOGIN"
-                android:textColor="#D4AF37"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:text="Sign in to access live content controls, services, barbers, pricing, and bookings."
-                android:textColor="#A09E9B"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/etLoginEmail"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="28dp"
-                android:background="#1C1C24"
-                android:hint="Staff Email (admin@thehairmission.com)"
-                android:inputType="textEmailAddress"
-                android:paddingHorizontal="16dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666677"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/etLoginPassword"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="14dp"
-                android:background="#1C1C24"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:paddingHorizontal="16dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#666677"
-                android:textSize="14sp" />
-
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="22dp"
-                android:backgroundTint="#D4AF37"
-                android:text="SIGN IN AS STAFF"
-                android:textColor="#0A0A0C"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvQuickFill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
-                android:text="Use Master Staff Access: admin@thehairmission.com / admin123"
-                android:textColor="#D4AF37"
-                android:textSize="11sp" />
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- 2. ADMIN DASHBOARD CONTAINER (VISIBLE ONCE LOGGED IN) -->
-    <LinearLayout
-        android:id="@+id/layoutDashboard"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <!-- Tabs Row -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#121216">
-
+            <!-- TAB 1: GENERAL -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/sectionGeneral"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="6dp">
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/tabGeneral"
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:backgroundTint="#D4AF37"
-                    android:text="General &amp; Phone"
-                    android:textColor="#0A0A0C"
-                    android:textSize="11sp"
+                    android:layout_height="wrap_content"
+                    android:text="BRAND &amp; CONTACT IDENTITY"
+                    android:textColor="#D4AF37"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/tabHero"
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="6dp"
-                    android:backgroundTint="#24242B"
-                    android:text="Hero &amp; Stats"
-                    android:textColor="#D4AF37"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Salon / Business Name"
+                    android:textColor="#888888"
                     android:textSize="11sp" />
 
-                <Button
-                    android:id="@+id/tabServices"
+                <EditText
+                    android:id="@+id/etSalonName"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="6dp"
-                    android:backgroundTint="#24242B"
-                    android:text="Services &amp; Pricing"
-                    android:textColor="#D4AF37"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Phone Number"
+                    android:textColor="#888888"
                     android:textSize="11sp" />
 
-                <Button
-                    android:id="@+id/tabBarbers"
+                <EditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:inputType="phone"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="6dp"
-                    android:backgroundTint="#24242B"
-                    android:text="Artisans"
-                    android:textColor="#D4AF37"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="WhatsApp Number"
+                    android:textColor="#888888"
                     android:textSize="11sp" />
 
-                <Button
-                    android:id="@+id/tabPackages"
+                <EditText
+                    android:id="@+id/etWhatsapp"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:inputType="phone"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="6dp"
-                    android:backgroundTint="#24242B"
-                    android:text="VIP Packages"
-                    android:textColor="#D4AF37"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Concierge Email"
+                    android:textColor="#888888"
                     android:textSize="11sp" />
 
-                <Button
-                    android:id="@+id/tabWhyUs"
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="6dp"
-                    android:backgroundTint="#24242B"
-                    android:text="Why Choose Us"
-                    android:textColor="#D4AF37"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Physical Studio Address"
+                    android:textColor="#888888"
                     android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="City / Region"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Instagram Handle"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etInstagram"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Tagline"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etTagline"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
             </LinearLayout>
-        </HorizontalScrollView>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:fillViewport="true">
-
+            <!-- TAB 2: HERO -->
             <LinearLayout
+                android:id="@+id/sectionHero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="18dp">
+                android:visibility="gone">
 
-                <!-- TAB CONTENT 1: GENERAL -->
-                <LinearLayout
-                    android:id="@+id/sectionGeneral"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="BRAND &amp; CONTACT IDENTITY"
-                        android:textColor="#D4AF37"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Salon / Business Name"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etSalonName"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Phone Number"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etPhone"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:inputType="phone"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="WhatsApp Number (with country code)"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etWhatsapp"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:inputType="phone"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Concierge Email"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Physical Studio Address"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="City / Region"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etCity"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Instagram Handle"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etInstagram"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Tagline"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etTagline"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <!-- TAB CONTENT 2: HERO -->
-                <LinearLayout
-                    android:id="@+id/sectionHero"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="HERO SECTION &amp; KEY METRICS"
-                        android:textColor="#D4AF37"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Top Accolade Badge"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etHeroBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Headline Line 1"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etHeroLine1"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Headline Line 2 (Gold Gradient Highlight)"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etHeroLine2"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Hero Subtitle / Narrative"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etHeroDesc"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:background="#1C1C24"
-                        android:gravity="top|start"
-                        android:padding="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Hero Background Image URL"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etHeroBg"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="13sp" />
-
-                    <!-- Quick Metrics -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:text="Metric 1 (e.g. 4.98 / 5.0 | 850+ Google Reviews)"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etHeroStat1Val"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_weight="1"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-
-                        <EditText
-                            android:id="@+id/etHeroStat1Lbl"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="2"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Metric 2 (e.g. 14+ Yrs | Master Craftsmanship)"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etHeroStat2Val"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_weight="1"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-
-                        <EditText
-                            android:id="@+id/etHeroStat2Lbl"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="2"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- TAB CONTENT 3: SERVICES -->
-                <LinearLayout
-                    android:id="@+id/sectionServices"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SERVICES &amp; PRICES (FIRST 4 POPULAR SERVICES)"
-                        android:textColor="#D4AF37"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <!-- Service 1 -->
-                    <TextView
-                        android:id="@+id/tvSrv1Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Service 1 Name &amp; Price"
-                        android:textColor="#D4AF37"
-                        android:textSize="11sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etSrv1Name"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_weight="3"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-
-                        <EditText
-                            android:id="@+id/etSrv1Price"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="1"
-                            android:background="#1C1C24"
-                            android:inputType="number"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/etSrv1Desc"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="4dp"
-                        android:background="#181820"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#CCCCCC"
-                        android:textSize="12sp" />
-
-                    <!-- Service 2 -->
-                    <TextView
-                        android:id="@+id/tvSrv2Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:text="Service 2 Name &amp; Price"
-                        android:textColor="#D4AF37"
-                        android:textSize="11sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etSrv2Name"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_weight="3"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-
-                        <EditText
-                            android:id="@+id/etSrv2Price"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="1"
-                            android:background="#1C1C24"
-                            android:inputType="number"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/etSrv2Desc"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="4dp"
-                        android:background="#181820"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#CCCCCC"
-                        android:textSize="12sp" />
-
-                    <!-- Service 3 -->
-                    <TextView
-                        android:id="@+id/tvSrv3Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:text="Service 3 Name &amp; Price"
-                        android:textColor="#D4AF37"
-                        android:textSize="11sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etSrv3Name"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_weight="3"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-
-                        <EditText
-                            android:id="@+id/etSrv3Price"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="1"
-                            android:background="#1C1C24"
-                            android:inputType="number"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/etSrv3Desc"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:layout_marginTop="4dp"
-                        android:background="#181820"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#CCCCCC"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- TAB CONTENT 4: BARBERS -->
-                <LinearLayout
-                    android:id="@+id/sectionBarbers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MASTER BARBERS &amp; ARTISANS"
-                        android:textColor="#D4AF37"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <!-- Barber 1 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Lead Barber 1"
-                        android:textColor="#D4AF37"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etBarber1Name"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="13sp" />
-
-                    <EditText
-                        android:id="@+id/etBarber1Role"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="4dp"
-                        android:background="#181820"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#CCCCCC"
-                        android:textSize="12sp" />
-
-                    <!-- Barber 2 -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:text="Artisan Barber 2"
-                        android:textColor="#D4AF37"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etBarber2Name"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="13sp" />
-
-                    <EditText
-                        android:id="@+id/etBarber2Role"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="4dp"
-                        android:background="#181820"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#CCCCCC"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- TAB CONTENT 5: PACKAGES -->
-                <LinearLayout
-                    android:id="@+id/sectionPackages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VIP PACKAGES &amp; MEMBERSHIPS"
-                        android:textColor="#D4AF37"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="VIP Package 1 Name &amp; Price"
-                        android:textColor="#D4AF37"
-                        android:textSize="11sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/etPkg1Name"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_weight="3"
-                            android:background="#1C1C24"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-
-                        <EditText
-                            android:id="@+id/etPkg1Price"
-                            android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:layout_marginStart="6dp"
-                            android:layout_weight="1"
-                            android:background="#1C1C24"
-                            android:inputType="number"
-                            android:paddingHorizontal="10dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/etPkg1Tagline"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="4dp"
-                        android:background="#181820"
-                        android:paddingHorizontal="10dp"
-                        android:textColor="#CCCCCC"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <!-- TAB CONTENT 6: WHY US -->
-                <LinearLayout
-                    android:id="@+id/sectionWhyUs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="WHY CHOOSE US HEADING"
-                        android:textColor="#D4AF37"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Eyebrow Badge"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etWhyEyebrow"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Section Title"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etWhyTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:background="#1C1C24"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Subtitle / Description"
-                        android:textColor="#888888"
-                        android:textSize="11sp" />
-
-                    <EditText
-                        android:id="@+id/etWhySubtitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="72dp"
-                        android:background="#1C1C24"
-                        android:gravity="top|start"
-                        android:padding="12dp"
-                        android:textColor="#FFFFFF"
-                        android:textSize="13sp" />
-                </LinearLayout>
-
-                <!-- Action Button -->
-                <Button
-                    android:id="@+id/btnPublishAll"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="24dp"
-                    android:backgroundTint="#D4AF37"
-                    android:text="PUBLISH ALL CONTENT TO DATABASE &amp; FRONTEND"
-                    android:textColor="#0A0A0C"
-                    android:textSize="13sp"
+                    android:text="HERO SECTION &amp; KEY METRICS"
+                    android:textColor="#D4AF37"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/btnRefreshAll"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Top Accolade Badge"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etHeroBadge"
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="#24242B"
-                    android:text="SYNC / REFRESH CURRENT DATABASE"
-                    android:textColor="#D4AF37"
+                    android:text="Headline Line 1"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etHeroLine1"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Headline Line 2 (Gold Highlight)"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etHeroLine2"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Narrative Description"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etHeroDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="#1C1C24"
+                    android:gravity="top|start"
+                    android:padding="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Hero Background Image URL"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etHeroBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
                     android:textSize="12sp" />
 
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Metric 1 (Value &amp; Label)"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etHeroStat1Val"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etHeroStat1Lbl"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="2"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Metric 2 (Value &amp; Label)"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etHeroStat2Val"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etHeroStat2Lbl"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="2"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- TAB 3: SERVICES -->
+            <LinearLayout
+                android:id="@+id/sectionServices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SERVICES &amp; PRICES (CARDS)"
+                    android:textColor="#D4AF37"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!-- Service 1 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Service 1 Name &amp; Price"
+                    android:textColor="#D4AF37"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etSrv1Name"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="3"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etSrv1Price"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="#1C1C24"
+                        android:inputType="number"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etSrv1Desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#181820"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp" />
+
+                <!-- Service 2 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Service 2 Name &amp; Price"
+                    android:textColor="#D4AF37"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etSrv2Name"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="3"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etSrv2Price"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="#1C1C24"
+                        android:inputType="number"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etSrv2Desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#181820"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp" />
+
+                <!-- Service 3 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Service 3 Name &amp; Price"
+                    android:textColor="#D4AF37"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etSrv3Name"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="3"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etSrv3Price"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="#1C1C24"
+                        android:inputType="number"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etSrv3Desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#181820"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- TAB 4: BARBERS WITH INTERNET PHOTO URL INTEGRATION -->
+            <LinearLayout
+                android:id="@+id/sectionBarbers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MASTER ARTISANS &amp; PHOTO URL INTEGRATION"
+                    android:textColor="#D4AF37"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <!-- Barber 1 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Lead Barber 1 Name &amp; Role"
+                    android:textColor="#D4AF37"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etBarber1Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/etBarber1Role"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#181820"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Barber 1 Photo (Any Internet Image URL)"
+                    android:textColor="#888888"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/etBarber1Url"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#1C1C24"
+                    android:hint="https://..."
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#D4AF37"
+                    android:textColorHint="#666677"
+                    android:textSize="12sp" />
+
+                <!-- Barber 2 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Artisan Barber 2 Name &amp; Role"
+                    android:textColor="#D4AF37"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etBarber2Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/etBarber2Role"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#181820"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Barber 2 Photo (Any Internet Image URL)"
+                    android:textColor="#888888"
+                    android:textSize="10sp" />
+
+                <EditText
+                    android:id="@+id/etBarber2Url"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="#1C1C24"
+                    android:hint="https://..."
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#D4AF37"
+                    android:textColorHint="#666677"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- TAB 5: PACKAGES -->
+            <LinearLayout
+                android:id="@+id/sectionPackages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VIP PACKAGES &amp; MEMBERSHIPS"
+                    android:textColor="#D4AF37"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="VIP Package Name &amp; Price"
+                    android:textColor="#D4AF37"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etPkg1Name"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_weight="3"
+                        android:background="#1C1C24"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/etPkg1Price"
+                        android:layout_width="0dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:background="#1C1C24"
+                        android:inputType="number"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/etPkg1Tagline"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#181820"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="#CCCCCC"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- TAB 6: WHY US -->
+            <LinearLayout
+                android:id="@+id/sectionWhyUs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WHY CHOOSE US HEADING"
+                    android:textColor="#D4AF37"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Eyebrow Badge"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etWhyEyebrow"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Section Title"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etWhyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="#1C1C24"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Subtitle / Description"
+                    android:textColor="#888888"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etWhySubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="#1C1C24"
+                    android:gravity="top|start"
+                    android:padding="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Action Button -->
+            <Button
+                android:id="@+id/btnPublishAll"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#D4AF37"
+                android:text="PUBLISH ALL TO SUPABASE &amp; WEBSITE"
+                android:textColor="#0A0A0C"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnRefreshAll"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#24242B"
+                android:text="SYNC / REFRESH CURRENT DATABASE"
+                android:textColor="#D4AF37"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

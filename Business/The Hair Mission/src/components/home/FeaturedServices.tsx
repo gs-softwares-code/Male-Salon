@@ -71,8 +71,11 @@ export const FeaturedServices: React.FC = () => {
               {/* Image Container with Badges */}
               <div className="relative h-60 overflow-hidden bg-salon-900">
                 <img
-                  src={service.image}
+                  src={service.image || 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80'}
                   alt={service.name}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80';
+                  }}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-salon-900 via-transparent to-transparent opacity-80" />
